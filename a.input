@@ -1,0 +1,4 @@
+def f = function(a){a=4;};
+def b = 1;
+f(b);
+assert b == 4;
