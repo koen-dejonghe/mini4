@@ -57,7 +57,7 @@ postfix
 	;
 	
 functionCall
-	:	ID '(' (expr (',' expr)*)? ')'
+	:	qid '(' (expr (',' expr)*)? ')'
 	;	
 
 mapExpr

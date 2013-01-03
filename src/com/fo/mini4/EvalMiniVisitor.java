@@ -152,7 +152,7 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 		String id = ctx.ID().getText();
 		currentScope.put(id, value);
 		return value;
-		
+
 	}
 
 	@Override
@@ -220,20 +220,13 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 	@Override
 	public Gizmo visitFunctionCall(Mini4Parser.FunctionCallContext ctx) {
 
-		String functionName = ctx.ID().getText();
-		Gizmo function = currentScope.get(functionName);
-		if (function == null) {
-			throw new UndefinedVariableException(ctx);
-		}
-
-//		Gizmo function = visit(ctx.qid());
-//		String functionName = function.name;
+		Gizmo function = visit(ctx.qid());
 
 		// check if it's really a function
 		Mini4Parser.FunctionDefContext functionContext = function
 				.functionValue();
 		if (functionContext == null) {
-			throw new UndefinedFunctionException(functionName
+			throw new UndefinedFunctionException(function.name
 					+ " is not a function", ctx);
 		}
 

@@ -217,6 +217,13 @@ public class EvalMiniVisitorTest {
 		interp(program);
 	}
 
+	@Test
+	public void memberFunctionCall(){
+		String program = "def m = {f = function(a, b) { return a + b; }, x = 3, y = 4 };" +
+				"assert m.f(m.x, m.y) == 7;";
+		interp(program);
+	}
+
 	private EvalMiniVisitor interp(String program) {
 		ANTLRInputStream input = new ANTLRInputStream(program);
 		Mini4Lexer lexer = new Mini4Lexer(input);

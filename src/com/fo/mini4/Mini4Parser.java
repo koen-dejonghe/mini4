@@ -993,7 +993,9 @@ public class Mini4Parser extends Parser {
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode<Token> ID() { return getToken(Mini4Parser.ID, 0); }
+		public QidContext qid() {
+			return getRuleContext(QidContext.class,0);
+		}
 		public List<? extends ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
@@ -1015,7 +1017,7 @@ public class Mini4Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(133); match(ID);
+			setState(133); qid();
 			setState(134); match(6);
 			setState(143);
 			//_errHandler.sync(this);
@@ -1251,7 +1253,7 @@ public class Mini4Parser extends Parser {
 		"ye\1\0\0\0yf\1\0\0\0yg\1\0\0\0yh\1\0\0\0yl\1\0\0\0yq\1\0\0\0yx\1\0\0\0"+
 		"z\t\1\0\0\0{\177\5\25\0\0|~\3\f\6\0}|\1\0\0\0~\u0081\1\0\0\0\177}\1\0"+
 		"\0\0\177\u0080\1\0\0\0\u0080\13\1\0\0\0\u0081\177\1\0\0\0\u0082\u0083"+
-		"\5\3\0\0\u0083\u0084\5\25\0\0\u0084\r\1\0\0\0\u0085\u0086\5\25\0\0\u0086"+
+		"\5\3\0\0\u0083\u0084\5\25\0\0\u0084\r\1\0\0\0\u0085\u0086\3\n\5\0\u0086"+
 		"\u008f\5\6\0\0\u0087\u008c\3\4\2\0\u0088\u0089\5\4\0\0\u0089\u008b\3\4"+
 		"\2\0\u008a\u0088\1\0\0\0\u008b\u008e\1\0\0\0\u008c\u008a\1\0\0\0\u008c"+
 		"\u008d\1\0\0\0\u008d\u0090\1\0\0\0\u008e\u008c\1\0\0\0\u008f\u0087\1\0"+
