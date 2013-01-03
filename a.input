@@ -1,4 +1,3 @@
-def f = function(a){a=4;};
-def b = 1;
-f(b);
-assert b == 4;
+def m = {f = function(a, b) { return a + b; } };
+def g = m.f; 
+assert g(3, 4) == 7;

@@ -192,6 +192,31 @@ public class EvalMiniVisitorTest {
 		interp(program);
 	}
 
+	@Test
+	public void functionAsParameter() {
+		String program = "def f = function(a, b) { return a + b; }; "
+				+ "def g = function(fun, a, b) { return fun(a, b) + fun(a, b); }; "
+				+ "def c = g(f, 4, 5); "
+				+ "println g(f, 4, 5); assert c == 18; ";
+		interp(program);
+	}
+
+	@Test
+	public void functionReturningFunction() {
+		String program = "def f = function() { def g = function(x, y) {return x + y;}; return g; }; "
+				+ "def h = f(); "
+				+ "println h(4, 5); "
+				+ "assert h(4, 5) == 9; ";
+		interp(program);
+	}
+	
+	@Test
+	public void memberFunction(){
+		String program = "def m = {f = function(a, b) { return a + b; } };" +
+				"def g = m.f; assert g(3, 4) == 7;";
+		interp(program);
+	}
+
 	private EvalMiniVisitor interp(String program) {
 		ANTLRInputStream input = new ANTLRInputStream(program);
 		Mini4Lexer lexer = new Mini4Lexer(input);

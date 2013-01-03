@@ -96,9 +96,6 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 		} else if (right == null) {
 			eq = left.core == null;
 		} else {
-			
-			System.out.println(left.core.getClass());
-			System.out.println(right.core.getClass());
 			eq = left.core.equals(right.core);
 		}
 
@@ -153,10 +150,9 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 	public Gizmo visitMapElDecl(Mini4Parser.MapElDeclContext ctx) {
 		Gizmo value = visit(ctx.expr());
 		String id = ctx.ID().getText();
-		Gizmo key = new Gizmo();
-		key.core = value.core;
-		currentScope.put(id, key);
-		return key;
+		currentScope.put(id, value);
+		return value;
+		
 	}
 
 	@Override
@@ -215,10 +211,10 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 			functionScope.put(token.getText(), new Gizmo());
 		}
 
-		Gizmo functionParameters = new Gizmo();
-		functionParameters.scope = functionScope;
+		Gizmo formalParameters = new Gizmo();
+		formalParameters.scope = functionScope;
 
-		return functionParameters;
+		return formalParameters;
 	}
 
 	@Override
@@ -229,6 +225,9 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 		if (function == null) {
 			throw new UndefinedVariableException(ctx);
 		}
+
+//		Gizmo function = visit(ctx.qid());
+//		String functionName = function.name;
 
 		// check if it's really a function
 		Mini4Parser.FunctionDefContext functionContext = function
@@ -275,7 +274,6 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 
 		currentScope = cscope;
 		return rtv;
-
 	}
 
 	@Override
