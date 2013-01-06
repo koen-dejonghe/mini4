@@ -38,8 +38,7 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 		ExprContext expr = ctx.expr();
 		if (expr == null) {
 			currentScope.put(id, new Gizmo());
-		}
-		else {
+		} else {
 			currentScope.put(id, visit(expr));
 		}
 		return null;
@@ -105,25 +104,12 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 	public Gizmo visitEqExpr(Mini4Parser.EqExprContext ctx) {
 		Gizmo left = visit(ctx.expr(0)); // get value of left subexpression
 		Gizmo right = visit(ctx.expr(1)); // get value of right subexpression
-		boolean eq;
 
-		if (left == null && right == null) {
-			eq = true;
-		} else if (left == null) {
-			eq = right.core == null;
-		} else if (right == null) {
-			eq = left.core == null;
-		} else {
-			eq = left.core.equals(right.core);
-		}
-
-		Gizmo ret = new Gizmo();
 		if (ctx.op.getType() == Mini4Parser.EQ) {
-			ret.core = new Boolean(eq);
+			return left.eq(right);
 		} else {
-			ret.core = new Boolean(!eq);
+			return left.ne(right);
 		}
-		return ret;
 	}
 
 	@Override
@@ -254,7 +240,7 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 		// required for recursive functions
 		functionScope.parentScope = new GizmoMemory();
 		functionScope.parentScope.put(function.name, function);
-		
+
 		// first copy all the names of the scope
 		functionScope.putAll(function.scope);
 
