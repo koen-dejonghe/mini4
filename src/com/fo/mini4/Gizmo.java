@@ -17,6 +17,21 @@ public class Gizmo {
 		if (core instanceof Integer) {
 			return (Integer) core;
 		}
+		
+		if (core instanceof Double) {
+			Double d = (Double) core;
+			return d.intValue();
+		}
+
+		if (core instanceof String) {
+			String s = (String) core;
+			try {
+				return Integer.valueOf(s);
+			} catch (NumberFormatException e) {
+
+			}
+		}
+
 		return null;
 	}
 
@@ -31,6 +46,19 @@ public class Gizmo {
 		if (core instanceof Double) {
 			return (Double) core;
 		}
+		if (core instanceof Integer) {
+			Integer i = (Integer) core;
+			return i.doubleValue();
+		}
+		if (core instanceof String) {
+			String s = (String) core;
+			try {
+				return Double.valueOf(s);
+			} catch (NumberFormatException e) {
+
+			}
+		}
+
 		return null;
 	}
 
@@ -41,6 +69,16 @@ public class Gizmo {
 
 		if (core instanceof Integer) {
 			return integerValue() != 0;
+		}
+
+		if (core instanceof String) {
+			String s = (String) core;
+			if (s.compareToIgnoreCase("true") == 0) {
+				return true;
+			}
+			if (s.compareToIgnoreCase("false") == 0) {
+				return false;
+			}
 		}
 
 		return null;
@@ -94,7 +132,7 @@ public class Gizmo {
 
 	public Gizmo ne(Gizmo operand) {
 		Gizmo result = eq(operand);
-		result.core = ! result.booleanValue();
+		result.core = !result.booleanValue();
 		return result;
 	}
 
