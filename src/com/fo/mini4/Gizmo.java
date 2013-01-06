@@ -50,6 +50,7 @@ public class Gizmo {
 			Integer i = (Integer) core;
 			return i.doubleValue();
 		}
+		
 		if (core instanceof String) {
 			String s = (String) core;
 			try {
