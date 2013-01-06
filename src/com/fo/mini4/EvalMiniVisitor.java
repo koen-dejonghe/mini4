@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.fo.mini4.Mini4Parser.ExprContext;
+import com.fo.mini4.Mini4Parser.QqStringContext;
 import com.fo.mini4.exceptions.AssertException;
 import com.fo.mini4.exceptions.UndefinedFunctionException;
 import com.fo.mini4.exceptions.UndefinedVariableException;
@@ -33,14 +34,15 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 
 	@Override
 	public Gizmo visitDef(Mini4Parser.DefContext ctx) {
-
-		ExprContext expr = ctx.expr();
-		Gizmo value = new Gizmo();
-		if (expr != null) {
-			value = visit(expr);
-		}
 		String id = ctx.ID().getText();
-		return currentScope.put(id, value);
+		ExprContext expr = ctx.expr();
+		if (expr == null) {
+			currentScope.put(id, new Gizmo());
+		}
+		else {
+			currentScope.put(id, visit(expr));
+		}
+		return null;
 	}
 
 	@Override
@@ -56,6 +58,22 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 	public Gizmo visitInt(Mini4Parser.IntContext ctx) {
 		Gizmo gizmo = new Gizmo();
 		gizmo.core = Integer.valueOf(ctx.INT().getText());
+		return gizmo;
+	}
+
+	@Override
+	public Gizmo visitQString(Mini4Parser.QStringContext ctx) {
+		Gizmo gizmo = new Gizmo();
+		String qstring = ctx.Q_STRING().getText();
+		gizmo.core = qstring.replaceAll("^\'|\'$", "");
+		return gizmo;
+	}
+
+	@Override
+	public Gizmo visitQqString(QqStringContext ctx) {
+		Gizmo gizmo = new Gizmo();
+		String qstring = ctx.QQ_STRING().getText();
+		gizmo.core = qstring.replaceAll("^\"|\"$", "");
 		return gizmo;
 	}
 
@@ -231,6 +249,12 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 		}
 
 		GizmoMemory functionScope = new GizmoMemory();
+
+		// function must be known in parentScope
+		// required for recursive functions
+		functionScope.parentScope = new GizmoMemory();
+		functionScope.parentScope.put(function.name, function);
+		
 		// first copy all the names of the scope
 		functionScope.putAll(function.scope);
 
@@ -276,6 +300,36 @@ public class EvalMiniVisitor extends Mini4BaseVisitor<Gizmo> {
 			returnValue.value = visit(ctx.expr());
 		}
 		throw returnValue;
+	}
+
+	@Override
+	public Gizmo visitIfStatement(Mini4Parser.IfStatementContext ctx) {
+		Gizmo bg = visit(ctx.expr());
+		Boolean b = bg.booleanValue();
+		if (b) {
+			return visit(ctx.block(0));
+		} else if (ctx.block(1) != null) {
+			return visit(ctx.block(1));
+		}
+		return null;
+	}
+
+	@Override
+	public Gizmo visitOrExpr(Mini4Parser.OrExprContext ctx) {
+		Gizmo b1 = visit(ctx.expr(0));
+		Gizmo b2 = visit(ctx.expr(1));
+		Gizmo r = new Gizmo();
+		r.core = b1.booleanValue() || b2.booleanValue();
+		return r;
+	}
+
+	@Override
+	public Gizmo visitAndExpr(Mini4Parser.AndExprContext ctx) {
+		Gizmo b1 = visit(ctx.expr(0));
+		Gizmo b2 = visit(ctx.expr(1));
+		Gizmo r = new Gizmo();
+		r.core = b1.booleanValue() && b2.booleanValue();
+		return r;
 	}
 
 }

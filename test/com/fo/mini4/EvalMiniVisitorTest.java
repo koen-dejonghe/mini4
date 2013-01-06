@@ -195,7 +195,7 @@ public class EvalMiniVisitorTest {
 	@Test
 	public void functionAsParameter() {
 		String program = "def f = function(a, b) { return a + b; }; "
-				+ "def g = function(fun, a, b) { return fun(a, b) + fun(a, b); }; "
+				+ "def g = function(fun, x, y) { return fun(x, y) + fun(x, y); }; "
 				+ "def c = g(f, 4, 5); "
 				+ "println g(f, 4, 5); assert c == 18; ";
 		interp(program);
@@ -209,18 +209,81 @@ public class EvalMiniVisitorTest {
 				+ "assert h(4, 5) == 9; ";
 		interp(program);
 	}
-	
+
 	@Test
-	public void memberFunction(){
-		String program = "def m = {f = function(a, b) { return a + b; } };" +
-				"def g = m.f; assert g(3, 4) == 7;";
+	public void memberFunction() {
+		String program = "def m = {f = function(a, b) { return a + b; } };"
+				+ "def g = m.f; assert g(3, 4) == 7;";
 		interp(program);
 	}
 
 	@Test
-	public void memberFunctionCall(){
-		String program = "def m = {f = function(a, b) { return a + b; }, x = 3, y = 4 };" +
-				"assert m.f(m.x, m.y) == 7;";
+	public void memberFunctionCall() {
+		String program = "def m = {f = function(a, b) { return a + b; }, x = 3, y = 4 };"
+				+ "assert m.f(m.x, m.y) == 7;";
+		interp(program);
+	}
+
+	@Test
+	public void memberFunctionCallUsingMapScope() {
+		String program = "def m = {x = 3, y = 4, f = function() { return x + y; } };"
+				+ "assert m.f() == 7;";
+		try {
+			interp(program);
+		} catch (UndefinedVariableException e) {
+			return;
+		}
+		fail("should have thrown UndefinedVariableException");
+	}
+
+	@Test
+	public void memberFunctionCallUsingParentScope() {
+		String program = "def m = {f = function() { return x + y; } };"
+				+ "def x = 3; def y = 4; assert m.f() == 7;";
+		try {
+			interp(program);
+		} catch (UndefinedVariableException e) {
+			return;
+		}
+		fail("should have thrown UndefinedVariableException");
+	}
+
+	@Test
+	public void ifThenStatement() {
+		String program = "if (false) { assert false; }";
+		interp(program);
+	}
+
+	@Test
+	public void ifThenElseStatement() {
+		String program = "if (false) { assert false; } else { print 'true'; }";
+		interp(program);
+	}
+
+	@Test
+	public void recursiveFunctionCall() {
+		String program = "def fib = function (n) { \n"
+				+ "if (n == 0 || n == 1) { return n; } \n"
+				+ "else { return fib(n - 1) + fib(n - 2); } \n};"
+				+ " def c = fib(10); println 'c = ' + c; assert c == 55;";
+		interp(program);
+	}
+
+	@Test
+	public void addIntegers() {
+		String program = "assert 3 + 4 == 7;";
+		interp(program);
+	}
+
+	@Test
+	public void addStringInteger() {
+		String program = "assert 'aaa' + 4 == 'aaa4'; assert 4 + 'aaa' == '4aaa';";
+		interp(program);
+	}
+
+	@Test
+	public void addStringString() {
+		String program = "assert 'aaa' + 'bbb' == 'aaabbb' ;";
 		interp(program);
 	}
 

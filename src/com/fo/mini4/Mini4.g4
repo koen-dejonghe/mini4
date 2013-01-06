@@ -17,6 +17,7 @@ stat:
     |	'print' expr ';'	# print
     |	'println' expr ';'	# println
     |	'return' expr? ';'	# returnLabel
+    |	ifStatement			# ifStatementLabel
     |	block				# blockLabel
     |	expr ';'			# exprLabel
     ;
@@ -71,6 +72,10 @@ mapElDecl
 parDefList
 	:	ID (',' ID)*
 	;	
+	
+ifStatement
+	:	'if' '(' expr ')' block ('else' block )?
+	; 
 	
 BOOL:	'true' | 'false' //put this before ID, otherwise lexer thinks this is an identifier
 	;

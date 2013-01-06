@@ -22,8 +22,8 @@ public class Mini4BaseVisitor<T> extends ParseTreeVisitor<T> implements Mini4Vis
 	@Override public T visitEqExpr(Mini4Parser.EqExprContext ctx) { return visitChildren(ctx); }
 	@Override public T visitMapExprLabel(Mini4Parser.MapExprLabelContext ctx) { return visitChildren(ctx); }
 	@Override public T visitQidLabel(Mini4Parser.QidLabelContext ctx) { return visitChildren(ctx); }
-	@Override public T visitAddSubExpr(Mini4Parser.AddSubExprContext ctx) { return visitChildren(ctx); }
 	@Override public T visitExprLabel(Mini4Parser.ExprLabelContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddSubExpr(Mini4Parser.AddSubExprContext ctx) { return visitChildren(ctx); }
 	@Override public T visitInt(Mini4Parser.IntContext ctx) { return visitChildren(ctx); }
 	@Override public T visitParDefList(Mini4Parser.ParDefListContext ctx) { return visitChildren(ctx); }
 	@Override public T visitMapElDecl(Mini4Parser.MapElDeclContext ctx) { return visitChildren(ctx); }
@@ -34,10 +34,12 @@ public class Mini4BaseVisitor<T> extends ParseTreeVisitor<T> implements Mini4Vis
 	@Override public T visitRelExpr(Mini4Parser.RelExprContext ctx) { return visitChildren(ctx); }
 	@Override public T visitPrint(Mini4Parser.PrintContext ctx) { return visitChildren(ctx); }
 	@Override public T visitQqString(Mini4Parser.QqStringContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfStatement(Mini4Parser.IfStatementContext ctx) { return visitChildren(ctx); }
 	@Override public T visitOrExpr(Mini4Parser.OrExprContext ctx) { return visitChildren(ctx); }
 	@Override public T visitMulDivExpr(Mini4Parser.MulDivExprContext ctx) { return visitChildren(ctx); }
 	@Override public T visitAssert(Mini4Parser.AssertContext ctx) { return visitChildren(ctx); }
 	@Override public T visitBool(Mini4Parser.BoolContext ctx) { return visitChildren(ctx); }
 	@Override public T visitBrickLabel(Mini4Parser.BrickLabelContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfStatementLabel(Mini4Parser.IfStatementLabelContext ctx) { return visitChildren(ctx); }
 	@Override public T visitNil(Mini4Parser.NilContext ctx) { return visitChildren(ctx); }
 }

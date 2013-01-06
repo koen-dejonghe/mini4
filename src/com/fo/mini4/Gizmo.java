@@ -38,6 +38,11 @@ public class Gizmo {
 		if (core instanceof Boolean){
 			return (Boolean)core;
 		}
+		
+		if (core instanceof Integer) {
+			return integerValue() != 0;
+		}
+		
 		return null;
 	}
 	
@@ -57,8 +62,11 @@ public class Gizmo {
 	
 	public Gizmo add(Gizmo operand){
 		Gizmo result = new Gizmo();
-		if (core instanceof String && operand.core instanceof String){
+		if (core instanceof String){
 			result.core = (String) core + operand.core;
+		}
+		else if (operand.core instanceof String){
+			result.core = "" + core + operand.core;
 		}
 		else if (core instanceof Integer && operand.core instanceof Integer){
 			result.core = (Integer) core + (Integer) operand.core;

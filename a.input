@@ -1,3 +1,8 @@
-def m = {f = function(a, b) { return a + b; } };
-def g = m.f; 
-assert g(3, 4) == 7;
+def fib; 
+
+fib = function (n) {
+  if (n == 0 || n == 1) { return n; }
+  else { return fib(n - 1) + fib(n - 2); } 
+};
+def c = fib(10); 
+assert c == 34;

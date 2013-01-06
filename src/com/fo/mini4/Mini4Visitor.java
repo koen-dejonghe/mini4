@@ -21,8 +21,8 @@ public interface Mini4Visitor<T> {
 	T visitEqExpr(Mini4Parser.EqExprContext ctx);
 	T visitMapExprLabel(Mini4Parser.MapExprLabelContext ctx);
 	T visitQidLabel(Mini4Parser.QidLabelContext ctx);
-	T visitAddSubExpr(Mini4Parser.AddSubExprContext ctx);
 	T visitExprLabel(Mini4Parser.ExprLabelContext ctx);
+	T visitAddSubExpr(Mini4Parser.AddSubExprContext ctx);
 	T visitInt(Mini4Parser.IntContext ctx);
 	T visitParDefList(Mini4Parser.ParDefListContext ctx);
 	T visitMapElDecl(Mini4Parser.MapElDeclContext ctx);
@@ -33,10 +33,12 @@ public interface Mini4Visitor<T> {
 	T visitRelExpr(Mini4Parser.RelExprContext ctx);
 	T visitPrint(Mini4Parser.PrintContext ctx);
 	T visitQqString(Mini4Parser.QqStringContext ctx);
+	T visitIfStatement(Mini4Parser.IfStatementContext ctx);
 	T visitOrExpr(Mini4Parser.OrExprContext ctx);
 	T visitMulDivExpr(Mini4Parser.MulDivExprContext ctx);
 	T visitAssert(Mini4Parser.AssertContext ctx);
 	T visitBool(Mini4Parser.BoolContext ctx);
 	T visitBrickLabel(Mini4Parser.BrickLabelContext ctx);
+	T visitIfStatementLabel(Mini4Parser.IfStatementLabelContext ctx);
 	T visitNil(Mini4Parser.NilContext ctx);
 }
